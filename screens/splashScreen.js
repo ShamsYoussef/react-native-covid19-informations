@@ -17,7 +17,7 @@ export default function splashScreen({ navigation }) {
             <Image
                 resizeMode='contain'
                 style={{ height: 300, width: 300 }}
-                source={require('../assets/images/virus.gif')} />
+                source={require('../assets/images/logo.gif')} />
         </View>
     );
 }
