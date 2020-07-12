@@ -30,7 +30,13 @@ const dotsLocation = [
     }
 
 ]
-const SpreadOfVirus = () => {
+const SpreadOfVirus = (props) => {
+
+    const seeMoreHandler = () => {
+
+        props.navigation.navigate('AboutCovid')
+
+    }
 
     return (
         <View style={styles.container}>
@@ -38,7 +44,7 @@ const SpreadOfVirus = () => {
                 <View>
                     <Text style={styles.casesText}>Spread of Virus</Text>
                 </View>
-                <TouchableOpacity style={styles.seeMoreContainer}>
+                <TouchableOpacity onPress={seeMoreHandler} style={styles.seeMoreContainer}>
                     <Text style={styles.seeMoreText}>See details</Text>
                 </TouchableOpacity>
             </View>

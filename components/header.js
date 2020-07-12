@@ -6,20 +6,20 @@ import { LinearGradient } from 'expo-linear-gradient';
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
 
-const Header = () => {
+const Header = ({ image, text1, text2, customWidth, customLeft }) => {
 
     return (
         <View style={styles.container}>
             <LinearGradient style={styles.header} colors={['#2e75c6', '#0d1d78']} end={{ x: 0, y: 1 }}
                 start={{ x: 1, y: 1 }}>
                 <View style={{ width: width }}>
-                    <Image resizeMode="contain" style={styles.doctorImage} source={(require('../assets/images/doctor.png'))}></Image>
+                    <Image resizeMode="contain" style={{ ...styles.doctorImage, width: customWidth, left: customLeft }} source={image}></Image>
                 </View>
 
             </LinearGradient>
             <View style={styles.slugContainer}>
-                <Text style={styles.slugText}>All you need</Text>
-                <Text style={styles.slugText}>is stay at home.</Text>
+                <Text style={styles.slugText}>{text1}</Text>
+                <Text style={styles.slugText}>{text2}</Text>
             </View>
             <Image resizeMode="contain" style={styles.virusImage} source={(require('../assets/images/virus.png'))}></Image>
 
@@ -50,10 +50,10 @@ const styles = StyleSheet.create({
         top: -20
     },
     doctorImage: {
-        width: width / 1.9,
         position: "absolute",
         top: 290,
-        left: 30
+        // left: 30
+        //    left: -60
     },
     slugText: {
         color: 'white',

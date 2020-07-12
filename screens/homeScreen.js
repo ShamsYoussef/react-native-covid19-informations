@@ -1,6 +1,6 @@
 import React from 'react'
-import { StyleSheet, Text, View, Image, ImageBackground, Dimensions } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { StyleSheet, View, Dimensions } from 'react-native';
+
 import Header from '../components/header';
 import DropDownList from '../components/dropDownList'
 import CaseUpdate from '../components/caseUpdate'
@@ -9,20 +9,15 @@ import SpreadOfVirus from '../components/spreadOfVirus'
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
 
-export default function homeScreen() {
+const HomeScreen = ({ navigation }) => {
+
+    const image = require('../assets/images/doctor.png')
     return (
         <View style={styles.container}>
-
-            <Header></Header>
+            <Header image={image} text1="All you need" text2="is stay at home." customWidth={width / 1.9} customLeft={30}></Header>
             <DropDownList></DropDownList>
             <CaseUpdate></CaseUpdate>
-            <SpreadOfVirus></SpreadOfVirus>
-
-
-
-
-
-
+            <SpreadOfVirus navigation={navigation}></SpreadOfVirus>
         </View>
     )
 }
@@ -35,3 +30,5 @@ const styles = StyleSheet.create({
         flex: 1,
     },
 });
+
+export default HomeScreen;
