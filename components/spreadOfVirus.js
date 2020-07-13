@@ -1,7 +1,11 @@
-import React from 'react'
-import { StyleSheet, View, Text, Dimensions, TouchableOpacity, ImageBackground } from 'react-native';
+import React, { useState, useEffect } from 'react'
+import { StyleSheet, View, Text, Dimensions, TouchableOpacity, ImageBackground, Image } from 'react-native';
+import Animated from 'react-native-reanimated';
+import setTiming from '../components/timingAnimation';
+import { transform } from '../components/timingAnimation'
 
 const width = Dimensions.get('window').width
+const height = Dimensions.get('window').height
 
 const dotsLocation = [
     {
@@ -30,12 +34,20 @@ const dotsLocation = [
     }
 
 ]
+
+
+const { Value, Clock } = Animated;
+
 const SpreadOfVirus = (props) => {
 
+    const [spreadOpacity, setSpredOpacity] = useState(new Value(0));
+
+    useEffect(() => {
+        setSpredOpacity(setTiming(new Clock(), 0, 1));
+    }, [])
+
     const seeMoreHandler = () => {
-
         props.navigation.navigate('AboutCovid')
-
     }
 
     return (
@@ -49,11 +61,13 @@ const SpreadOfVirus = (props) => {
                 </TouchableOpacity>
             </View>
 
-            <ImageBackground resizeMode='contain' source={require('../assets/images/virusSpread.png')} style={styles.imageContainer}>
-                {dotsLocation.map((l, i) => {
-                    return <View style={{ ...styles.spreadDots, top: l.top, left: l.left }} key={i}></View>
-                })}
-            </ImageBackground>
+            <Animated.View style={{ transform: [{ translateX: transform(-50, 0, spreadOpacity) }]}} >
+                <ImageBackground resizeMode='contain' source={require('../assets/images/virusSpread.png')} style={styles.imageContainer}>
+                    {dotsLocation.map((l, i) => {
+                        return <Animated.View style={{ ...styles.spreadDots, top: l.top, left: l.left, opacity: spreadOpacity }} key={i}></Animated.View>
+                    })}
+                </ImageBackground>
+            </Animated.View>
 
 
         </View>
@@ -66,7 +80,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         position: 'absolute',
         width: width,
-        top: 550,
+        top: height/1.38,
     },
     textContainer: {
         flexDirection: "row",
@@ -88,7 +102,7 @@ const styles = StyleSheet.create({
 
     },
     imageContainer: {
-        height: 134,
+        height: height/5.67,
         backgroundColor: '#FFF',
         width: width / 1.1,
         borderRadius: 15,
@@ -102,8 +116,8 @@ const styles = StyleSheet.create({
     },
     spreadDots:
     {
-        width: 7,
-        height: 7,
+        width: width/51.4,
+        height: width/51.4,
         backgroundColor: 'red',
         position: "absolute",
         opacity: .5,

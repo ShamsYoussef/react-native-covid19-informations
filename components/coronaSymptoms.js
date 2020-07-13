@@ -1,5 +1,7 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { StyleSheet, View, Text, Dimensions, Image } from 'react-native';
+import Animated from 'react-native-reanimated';
+import setTiming from '../components/timingAnimation'
 
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
@@ -20,19 +22,32 @@ const allSymptoms = [
     }
 ]
 
+
+const { Value, Clock } = Animated;
+
 const CoronaSymptoms = () => {
+
+    const [SymptomsOpacity, setSymptomsOpacity] = useState(new Value(0));
+
+    useEffect(() => {
+        setTimeout(() => {
+            setSymptomsOpacity(setTiming(new Clock(), 0, 1));      
+        }, 100);
+    }, [])
+
+
 
     const renderSymptoms = (symptom, i) => {
         return (
-            <View style={styles.singleSymptom} key={i}>
+            <Animated.View style={{...styles.singleSymptom, opacity: SymptomsOpacity}} key={i}>
                 <View style={styles.imageContainer}>
                     <Image source={require('../assets/images/shadow.png')} />
                     <Image resizeMode='contain' style={styles.symptomImage} source={symptom.image} />
                 </View>
                 <Text style={styles.symptoms}>
-                   {symptom.symptoms}
-               </Text>
-            </View>
+                    {symptom.symptoms}
+                </Text>
+            </Animated.View>
         )
     }
     return (
@@ -57,7 +72,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         position: 'absolute',
         width: width,
-        top: 255,
+        top: height/3.04,
     },
     textContainer: {
         width: width / 1.1,
@@ -67,11 +82,10 @@ const styles = StyleSheet.create({
         fontFamily: 'Roboto-Bold'
     },
     symptomsContainer: {
-
         width: width / 1.1,
         marginTop: 15,
         flexDirection: "row",
-        height: 111,
+        height: height/6.84,
         justifyContent: "space-between"
 
     },
@@ -97,7 +111,7 @@ const styles = StyleSheet.create({
     },
     symptomImage: {
         width: width / 6,
-        height: 70,
+        height: height/10.85,
         position: "absolute",
         bottom: 6,
     },

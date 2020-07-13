@@ -1,34 +1,68 @@
-import React from 'react'
-import { StyleSheet, View, Text, Dimensions, Image } from 'react-native';
-
+import React, { useState, useEffect } from 'react'
+import { StyleSheet, View, Text, Dimensions, Image, FlatList } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
+import Animated from 'react-native-reanimated';
+
+import setTiming from '../components/timingAnimation'
 
 const width = Dimensions.get('window').width
-const height = Dimensions.get('window').height
+const height = Dimensions.get('window').height;
+
+
+
+const preventionItem = [
+    {
+        id: 1,
+        title: 'Wear face mask',
+        body: 'Since the start of the coronavirus outbreak some places have fully embraced wearing face masks, and anyone caught without one risks becoming a social pariah.',
+        image: require('../assets/images/wear-mask.png'),
+    },
+    {
+        id: 2,
+        title: 'Wash your hands',
+        body: 'These diseases include gastrointestinal infections, such as Salmonella, and respiratory infections, such as influenza.',
+        image: require('../assets/images/clean-your-hand.png'),
+    },
+    {
+        id: 3,
+        title: 'Cover While Coughing',
+        body: 'These diseases include gastrointestinal infections, such as Salmonella, and respiratory infections, such as influenza.',
+        image: require('../assets/images/cover-cough-sneezs.png'),
+
+    },
+]
+
+const { Value, Clock } = Animated;
 
 const Prevention = () => {
+    const [preventionOpacity, setPreventionOpacity] = useState(new Value(0));
 
-    const SinglePrevention = () => {
+    useEffect(() => {
+
+        setTimeout(() => {
+            setPreventionOpacity(setTiming(new Clock(), 0, 1));
+        }, 200);
+    }, [])
+
+
+
+
+    const SinglePrevention = ({ item }) => {
         return (
-            <View style={styles.singlePrevention}>
+            <Animated.View style={{ ...styles.singlePrevention, opacity: preventionOpacity }}>
                 <View>
-                    <Image style={{ position: 'absolute', left: -1 }} source={require('../assets/images/reventationShadow.png')}></Image>
-                    <Image style={styles.image} resizeMode='contain' source={require('../assets/images/wear-mask.png')}></Image>
+                    <Image style={styles.shadowImage} source={require('../assets/images/reventationShadow.png')}></Image>
+                    <Image style={styles.image} resizeMode='contain' source={item.item.image}></Image>
                 </View>
                 <View style={styles.textContainer}>
-                    <Text style={styles.PreventionTitle}>Wear face mask</Text>
-                    <Text style={styles.PreventionBody}>
-                        Since the start of the coronavirus outbreak
-                        some places have fully embraced wearing face
-                        masks, and anyone caught without one risks
-                        becoming a social pariah.
-                </Text>
+                    <Text style={styles.PreventionTitle}>{item.item.title}</Text>
+                    <Text style={styles.PreventionBody}>{item.item.body}</Text>
 
                     <View style={{ alignItems: "flex-end" }}>
                         <Entypo name="chevron-small-right" size={26} color="#2e75c6" />
                     </View>
                 </View>
-            </View>
+            </Animated.View>
         )
     }
     return (
@@ -38,7 +72,14 @@ const Prevention = () => {
             </View>
 
             <View style={styles.listConatiner}>
-                <SinglePrevention />
+
+                <FlatList
+                    data={preventionItem}
+                    renderItem={item => <SinglePrevention item={item} />}
+                    keyExtractor={(item, index) => (item.id).toString()}
+                    showsVerticalScrollIndicator={false}
+                />
+
             </View>
         </View>
     )
@@ -51,29 +92,28 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         position: 'absolute',
         width: width,
-        top: 425
+        top: height/1.83
     },
 
     PreventionContainer: {
         width: width / 1.1,
-        marginBottom: 10,
+        marginBottom: 5,
 
     },
     PreventionText: {
         fontSize: width / 23,
         fontFamily: 'Roboto-Bold',
-        marginBottom:5
+        marginBottom: 0
     },
     listConatiner: {
-        backgroundColor: '#FFF',
         width: width / 1.1,
-        height: height / 2.7
+        height: height / 2.5,
     },
     singlePrevention: {
-        backgroundColor: '#FFF',
-        height: 136,
-        width: '100%',
-        marginBottom: 20,
+        backgroundColor: '#fff',
+        height: height/5.588,
+        width: '99%',
+        marginBottom: 10,
         flexDirection: 'row',
         borderRadius: 20,
         shadowOffset: { width: 0, height: 2 },
@@ -81,16 +121,16 @@ const styles = StyleSheet.create({
         shadowOpacity: .2,
         elevation: 2,
         shadowRadius: 16.00,
+        marginTop: 10
 
     },
     textContainer: {
         flexDirection: 'column',
         position: 'absolute',
         width: width / 1.9,
-        left: 130,
+        left: width/2.76,
         justifyContent: "center",
-        height: '100%'
-
+        height: '100%',
     },
     PreventionTitle: {
         fontFamily: 'Roboto-Bold',
@@ -102,17 +142,18 @@ const styles = StyleSheet.create({
     PreventionBody: {
         fontSize: width / 36,
         fontFamily: "Roboto-Regular",
-        lineHeight: 15,
+        lineHeight: 16,
         marginBottom: 10,
-
-
     },
     image: {
-
         width: width / 2.6,
-        height: 157,
+        height: height/4.84,
         position: 'absolute',
         top: -10
+    },
+    shadowImage: {
+        position: 'absolute',
+        left: -1
     }
 
 });

@@ -32,14 +32,14 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         position: 'absolute',
         width: width,
-        top: 260
+        top: height/2.92
     },
 
     dropDownContainer: {
         borderWidth: 2,
         borderColor: '#f1f1f1',
         width: width / 1.1,
-        height: 45,
+        height: height/16.8,
         borderRadius: 50,
         justifyContent: "space-between",
         alignItems: "center",
@@ -54,8 +54,6 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         marginLeft: 10
     }
-
-
 });
 
 

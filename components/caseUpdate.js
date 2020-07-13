@@ -1,6 +1,8 @@
-import React from 'react'
-import { StyleSheet, View, Text, Dimensions, Button, TouchableOpacity } from 'react-native';
-
+import React, { useEffect, useState } from 'react'
+import { StyleSheet, View, Text, Dimensions, TouchableOpacity } from 'react-native';
+import Animated from 'react-native-reanimated';
+import setTiming from '../components/timingAnimation'
+import { transform } from '../components/timingAnimation'
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
 
@@ -10,31 +12,37 @@ const caseSections = [
         circleColor: '#ffede4',
         status: 'Infected',
         number: '1046'
-
     },
     {
         borderColor: '#FF4848',
         circleColor: '#ffd9d9',
         status: 'Deaths',
         number: '87'
-
     },
     {
         borderColor: '#36C12C',
         circleColor: '#d5f9d2',
         status: 'Recovered',
         number: '46'
-
     }
 ]
 
+const { Value, Clock } = Animated;
+
 const CaseUpdate = () => {
+
+    const [caseOpacity, setCaseOpacity] = useState(new Value(0));
+
+    useEffect(() => {
+        setCaseOpacity(setTiming(new Clock(), 0, 1));
+    }, [])
+
 
     /**case update that contain each status and its number */
 
     const CaseSection = (section, i) => {
         return (
-            <View style={styles.caseSectionContainer} key={i}>
+            <View style={{ ...styles.caseSectionContainer }} key={i} >
                 <View style={{ ...styles.circleContainer, backgroundColor: section.circleColor }}>
                     <View style={{ ...styles.smallCircle, backgroundColor: section.circleColor, borderColor: section.borderColor }}>
                     </View>
@@ -56,11 +64,11 @@ const CaseUpdate = () => {
                 </TouchableOpacity>
             </View>
 
-            <View style={styles.numbersContainer}>
-                {caseSections.map((l, i )=> {
+            <Animated.View style={{ ...styles.numbersContainer, opacity: caseOpacity, transform: [{ translateX: transform(-50, 0, caseOpacity) }] }}>
+                {caseSections.map((l, i) => {
                     return CaseSection(l, i);
                 })}
-            </View>
+            </Animated.View>
 
         </View>
     )
@@ -72,7 +80,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         position: 'absolute',
         width: width,
-        top: 330,
+        top: height / 2.3,
     },
     textContainer: {
         flexDirection: "row",
@@ -97,7 +105,7 @@ const styles = StyleSheet.create({
 
     },
     numbersContainer: {
-        height: 134,
+        height: height / 5.67,
         backgroundColor: '#FFF',
         width: width / 1.1,
         borderRadius: 15,
@@ -119,16 +127,16 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
     circleContainer: {
-        width: 23,
-        height: 23,
+        width: width / 15.65,
+        height: width / 15.65,
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 50
     },
     smallCircle: {
 
-        width: 12,
-        height: 12,
+        width: width/30,
+        height: width/30,
         borderRadius: 50,
         borderWidth: 2.5,
 

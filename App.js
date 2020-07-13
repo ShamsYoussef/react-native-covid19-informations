@@ -1,5 +1,4 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native';
 import Navigation from './navigation';
 import { useFonts } from '@use-expo/font';
 import { AppLoading } from 'expo';
@@ -21,11 +20,3 @@ export default function App() {
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center"
-
-  }
-})
